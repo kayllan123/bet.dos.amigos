@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Casa de Apostas Privada - TSI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Casa de Apostas - TSI</h1>
+    
+    <p id="welcome-msg" style="text-align:center; color:#ffcc00; font-weight:bold; margin-bottom: 10px;"></p>
+    <button id="logout-btn" style="float:right; margin-bottom: 10px;">Sair</button>
+
+    <div id="players">
+      <h2>Jogadores</h2>
+      <ul id="player-list"></ul>
+    </div>
+
+    <div id="bet-section">
+      <h2>Aposte R$5 (até 3 times)</h2>
+      <label for="player-select">Jogador:</label>
+      <select id="player-select"></select>
+
+      <label>Escolha até 3 times:</label>
+      <div id="teams-checkboxes">
+        <label><input type="checkbox" value="flamengo" /> flamengo</label>
+        <label><input type="checkbox" value="fluminense" /> fluminense</label>
+        <label><input type="checkbox" value="palmeiras" /> palmeiras</label>
+        <label><input type="checkbox" value="botafogo" /> botafogo</label>
+        <label><input type="checkbox" value="campinense" /> campinense</label>
+        <label><input type="checkbox" value="desportiva gba" /> desportiva gba</label>
+        <label><input type="checkbox" value="barcelona cordeiro" /> barcelona cordeiro</label>
+        <label><input type="checkbox" value="azulao rusario" /> azulao rusario</label>
+        <label><input type="checkbox" value="real madrid" /> real madrid</label>
+        <label><input type="checkbox" value="vasco" /> vasco</label>
+        <label><input type="checkbox" value="atletico" /> atletico</label>
+        <label><input type="checkbox" value="uniao" /> uniao</label>
+      </div>
+
+      <button id="place-bet">Fazer Aposta</button>
+    </div>
+
+    <div id="bets-list">
+      <h2>Apostas atuais</h2>
+      <ul id="current-bets"></ul>
+    </div>
+
+    <div id="results-section">
+      <h2>Resultado da Rodada</h2>
+      <label for="round-winner">Times campeões (selecione 3):</label>
+      <select id="round-winner" multiple size="5" style="width: 200px;">
+        <option value="flamengo">flamengo</option>
+        <option value="fluminense">fluminense</option>
+        <option value="palmeiras">palmeiras</option>
+        <option value="botafogo">botafogo</option>
+        <option value="campinense">campinense</option>
+        <option value="desportiva gba">desportiva gba</option>
+        <option value="barcelona cordeiro">barcelona cordeiro</option>
+        <option value="azulao rusario">azulao rusario</option>
+        <option value="real madrid">real madrid</option>
+        <option value="vasco">vasco</option>
+        <option value="atletico">atletico</option>
+        <option value="uniao">uniao</option>
+      </select>
+      <br />
+      <button id="declare-winner">Declarar Vencedores</button>
+    </div>
+
+    <div id="winner-announcement"></div>
+
+    <div id="pix-info" style="display:none;">
+      <h3>Envie o prêmio via Pix para:</h3>
+      <p><strong>Chave Pix:</strong>09383230401</p>
+    </div>
+
+    <h2>Roleta de Times</h2>
+    <canvas id="roulette-canvas" width="300" height="300"></canvas>
+    <br />
+    <button id="spin-button">Girar Roleta</button>
+    <p id="roulette-result"></p>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Validação de login
+    window.onload = () => {
+      const loggedInUser = localStorage.getItem('loggedInUser');
+      if (!loggedInUser) {
+        window.location.href = 'login.html';
+      } else {
+        // Mostra o nome do usuário logado
+        document.getElementById('welcome-msg').textContent = `Bem-vindo, ${loggedInUser}!`;
+        // Carrega o restante da interface e lógica em script.js
+      }
+    };
+
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      localStorage.removeItem('loggedInUser');
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>

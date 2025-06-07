@@ -1,0 +1,88 @@
+/* Fundo com imagem personalizada */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background-image: url('background.png.png'); /* Altere para background.jpg se for o caso */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #fff;
+}
+
+/* Container central com fundo semi-transparente */
+.container {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 30px;
+  margin: 30px auto;
+  max-width: 900px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #000;
+}
+
+/* Títulos */
+h1, h2, h3 {
+  text-align: center;
+  color: #ffcc00;
+}
+
+/* Botões */
+button {
+  background-color: #ffcc00;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #ffaa00;
+}
+
+/* Listas */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: rgba(255, 255, 255, 0.1);
+  margin-bottom: 5px;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+/* Inputs */
+select, input[type="checkbox"] {
+  margin: 5px;
+}
+
+/* Roleta */
+canvas {
+  display: block;
+  margin: 20px auto;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  box-shadow: 0 0 10px #000;
+}
+
+/* Resultado da roleta */
+#roulette-result {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #00ffcc;
+  margin-top: 10px;
+}
+
+/* Pix info */
+#pix-info {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 10px;
+}
