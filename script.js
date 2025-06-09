@@ -134,7 +134,7 @@ declareWinnerBtn.addEventListener('click', () => {
 });
 
 // ----------------------
-// 🎯 Roleta de Times
+// 🎯 Roleta de Times (corrigida)
 // ----------------------
 
 const canvas = document.getElementById('roulette-canvas');
@@ -194,35 +194,32 @@ function spinRoulette() {
 
   const spins = 10;
   const arc = (2 * Math.PI) / teams.length;
-  const selectedIndices = [];
   const selectedTeams = [];
   let currentSpin = 0;
 
-  function getUniqueIndex() {
-    let idx;
-    do {
-      idx = Math.floor(Math.random() * teams.length);
-    } while (selectedIndices.includes(idx));
-    return idx;
+  function getRandomRotationAngle() {
+    return Math.random() * 2 * Math.PI;
+  }
+
+  function getTeamFromAngle(angle) {
+    const normalized = (2 * Math.PI - (angle % (2 * Math.PI))) % (2 * Math.PI); // ajusta para sentido horário
+    const index = Math.floor(normalized / arc);
+    return teams[index];
   }
 
   function spinOnce() {
     if (currentSpin >= 3) {
       spinning = false;
-
       setTimeout(() => {
         rouletteResult.textContent = `Times sorteados: ${selectedTeams.join(', ')}`;
         Array.from(roundWinnerSelect.options).forEach(opt => {
           opt.selected = selectedTeams.includes(opt.value);
         });
       }, 500);
-
       return;
     }
 
-    const targetIndex = getUniqueIndex();
-    selectedIndices.push(targetIndex);
-    const targetAngle = (targetIndex * arc) + (arc / 2);
+    const targetAngle = getRandomRotationAngle();
     const finalAngle = (spins * 2 * Math.PI) + targetAngle;
     const duration = 2500;
     const start = performance.now();
@@ -238,7 +235,8 @@ function spinRoulette() {
       if (progress < 1) {
         requestAnimationFrame(animate);
       } else {
-        const selectedTeam = teams[targetIndex];
+        const actualAngle = rotation % (2 * Math.PI);
+        const selectedTeam = getTeamFromAngle(actualAngle);
         selectedTeams.push(selectedTeam);
         currentSpin++;
         setTimeout(spinOnce, 500);
