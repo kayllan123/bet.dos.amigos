@@ -1,17 +1,8 @@
 const players = ['ariel', 'will', 'gustavo', 'Kayllan', 'markin'];
 const teams = [
-  'flamengo',
-  'fluminense',
-  'palmeiras',
-  'botafogo',
-  'campinense',
-  'desportiva gba',
-  'barcelona cordeiro',
-  'azulao rusario',
-  'real madrid',
-  'vasco',
-  'atletico',
-  'uniao'
+  'flamengo', 'fluminense', 'palmeiras', 'botafogo',
+  'campinense', 'desportiva gba', 'barcelona cordeiro',
+  'azulao rusario', 'real madrid', 'vasco', 'atletico', 'uniao'
 ];
 
 const playerSelect = document.getElementById('player-select');
@@ -93,7 +84,6 @@ placeBetBtn.addEventListener('click', () => {
   clearCheckboxes();
 });
 
-// Popula o select de múltipla escolha com os times para os vencedores da rodada
 function populateRoundWinnerSelect() {
   roundWinnerSelect.innerHTML = '';
   teams.forEach(team => {
@@ -104,11 +94,9 @@ function populateRoundWinnerSelect() {
   });
 }
 
-// Limita seleção a 3 times no select de vencedores
 roundWinnerSelect.addEventListener('change', () => {
   const selectedOptions = Array.from(roundWinnerSelect.selectedOptions);
   if (selectedOptions.length > 3) {
-    // Desmarca a última seleção para não ultrapassar 3
     selectedOptions[selectedOptions.length - 1].selected = false;
     alert('Você só pode selecionar até 3 times.');
   }
@@ -124,8 +112,7 @@ declareWinnerBtn.addEventListener('click', () => {
   const winningTeams = selectedOptions.map(opt => opt.value);
   const totalPot = currentBets.length * 5;
 
-  // Filtra jogadores que apostaram em pelo menos um dos times vencedores
-  const winners = currentBets.filter(bet => 
+  const winners = currentBets.filter(bet =>
     bet.teams.some(team => winningTeams.includes(team))
   );
 
@@ -143,19 +130,17 @@ declareWinnerBtn.addEventListener('click', () => {
 
   currentBets = [];
   renderCurrentBets();
-  roundWinnerSelect.selectedIndex = -1; // limpa seleção
+  roundWinnerSelect.selectedIndex = -1;
 });
 
-// -------------------------
-// 🎯 Roleta de Times (3 sorteios animados)
-// -------------------------
+// ----------------------
+// 🎯 Roleta de Times
+// ----------------------
 
 const canvas = document.getElementById('roulette-canvas');
 const ctx = canvas.getContext('2d');
-
 const colors = ['#FF5733', '#33FF57', '#3357FF', '#F39C12', '#8E44AD', '#16A085', '#C0392B', '#2C3E50', '#E67E22'];
 
-// Função que desenha a roleta com rotação
 function drawRouletteWithRotation(angle) {
   const radius = canvas.width / 2;
   const arc = (2 * Math.PI) / teams.length;
@@ -186,7 +171,6 @@ function drawRouletteWithRotation(angle) {
 
   ctx.restore();
 
-  // Indicador fixo
   ctx.beginPath();
   ctx.moveTo(radius - 10, 0);
   ctx.lineTo(radius + 10, 0);
@@ -198,7 +182,6 @@ function drawRouletteWithRotation(angle) {
 let rotation = 0;
 let spinning = false;
 
-// Função spinRoulette atualizada para 3 sorteios animados diferentes
 function spinRoulette() {
   const player = playerSelect.value;
   if (player !== 'Kayllan') {
@@ -207,15 +190,14 @@ function spinRoulette() {
   }
 
   if (spinning) return;
-
   spinning = true;
 
-  const spins = 10; // voltas completas por sorteio
+  const spins = 10;
   const arc = (2 * Math.PI) / teams.length;
   const selectedIndices = [];
   const selectedTeams = [];
+  let currentSpin = 0;
 
-  // Função para sortear um índice que ainda não foi selecionado
   function getUniqueIndex() {
     let idx;
     do {
@@ -224,34 +206,31 @@ function spinRoulette() {
     return idx;
   }
 
-  let currentSpin = 0;
-
   function spinOnce() {
     if (currentSpin >= 3) {
-      // Finalizou os 3 sorteios
       spinning = false;
-      rouletteResult.textContent = `Times sorteados: ${selectedTeams.join(', ')}`;
 
-      // Atualiza o select com os times sorteados
-      Array.from(roundWinnerSelect.options).forEach(opt => {
-        opt.selected = selectedTeams.includes(opt.value);
-      });
+      setTimeout(() => {
+        rouletteResult.textContent = `Times sorteados: ${selectedTeams.join(', ')}`;
+        Array.from(roundWinnerSelect.options).forEach(opt => {
+          opt.selected = selectedTeams.includes(opt.value);
+        });
+      }, 500);
 
       return;
     }
 
     const targetIndex = getUniqueIndex();
     selectedIndices.push(targetIndex);
-
     const targetAngle = (targetIndex * arc) + (arc / 2);
     const finalAngle = (spins * 2 * Math.PI) + targetAngle;
-    const duration = 2500; // duração de cada giro em ms
+    const duration = 2500;
     const start = performance.now();
 
     function animate(time) {
       const elapsed = time - start;
       const progress = Math.min(elapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3); // ease-out
+      const ease = 1 - Math.pow(1 - progress, 3);
       rotation = ease * finalAngle;
 
       drawRouletteWithRotation(rotation);
@@ -262,7 +241,6 @@ function spinRoulette() {
         const selectedTeam = teams[targetIndex];
         selectedTeams.push(selectedTeam);
         currentSpin++;
-        // Pequena pausa antes do próximo giro
         setTimeout(spinOnce, 500);
       }
     }
