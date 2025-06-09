@@ -200,11 +200,10 @@ function spinRoulette() {
   function getRandomRotationAngle() {
     return Math.random() * 2 * Math.PI;
   }
-
   function getTeamFromAngle(angle) {
-    const normalized = (2 * Math.PI - (angle % (2 * Math.PI))) % (2 * Math.PI); // ajusta para sentido horário
-    const index = Math.floor(normalized / arc);
-    return teams[index];
+  const correctedAngle = (angle - Math.PI / 2 + 2 * Math.PI) % (2 * Math.PI);
+  const index = Math.floor(correctedAngle / arc);
+  return teams[index];
   }
 
   function spinOnce() {
